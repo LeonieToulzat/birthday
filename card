@@ -144,7 +144,7 @@
 </svg>
 
 <!-- Musique (auto-play si autorisé) -->
-<audio id="music" src="https://pixabay.com/fr/music/occasions-sp%C3%A9ciales-birthday-happy-birthday-music-373165/" loop></audio>
+<audio id="music" src="https://github.com/LeonieToulzat/birthday/blob/main/CHANSON%20-%20JOYEUX%20ANNIVERSAIRE.mp3" loop></audio>
 
 <script>
   // PLAY MUSIC (essaie auto-play ; si bloqué, démarre au premier clic)
