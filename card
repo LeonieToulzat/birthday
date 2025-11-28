@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Joyeux Anniversaire ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+   /* --bg1: #fdf6ff;
+    --bg2: #fff9ef;*/
+    --bg1: #e7d9ff;
+    --bg2: #d8c4ff;
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:"Poppins",sans-serif;
+    background:linear-gradient(135deg,var(--bg1),var(--bg2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column}
+
+  h1{
+    font-family:"Great Vibes",cursive;
+    font-size:3.2rem;
+    color:#ff4da6;
+    margin:8px 0 0 0;
+    text-shadow:0 0 10px rgba(255,90,150,0.25);
+    opacity:0; transform:translateY(8px); animation:fadeIn .9s ease forwards .2s;
+  }
+  p.message{
+    margin:8px 0 20px 0; text-align:center; max-width:760px; color:#444; font-size:1.15rem;
+    opacity:0; transform:translateY(10px); animation:fadeIn .95s ease forwards .35s;
+  }
+  @keyframes fadeIn{ to { opacity:1; transform:translateY(0); } }
+
+  /* cake */
+  .cake{ width:320px; filter:drop-shadow(0 10px 30px rgba(0,0,0,0.16)); margin-top:20px; }
+
+  /* Flames style (gradient + glow) comes from SVG defs; animation controlled here */
+  .flame {
+    transform-box: fill-box; /* make transform-origin inside SVG predictable */
+    transform-origin: 50% 75%;
+    animation-name: flameFlicker;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    /* duration & delay will be set inline per-flame for natural variation */
+    will-change: transform, opacity;
+  }
+
+  @keyframes flameFlicker {
+    0%   { transform: scale(1);    opacity: 0.86; }
+    40%  { transform: scale(1.14); opacity: 1;    }
+    70%  { transform: scale(0.98); opacity: 0.92; }
+    100% { transform: scale(1.03); opacity: 0.90; }
+  }
+
+  /* confetti */
+  .confetti {
+    position:fixed; top:-20px; width:10px; height:10px; border-radius:2px; opacity:.9;
+    animation-name: confettiFall; animation-iteration-count: infinite; animation-timing-function: linear;
+  }
+  @keyframes confettiFall { to { transform: translateY(120vh) rotate(360deg); } }
+
+  /* petit responsive */
+  @media (max-width:420px){
+    .cake{ width:220px; }
+    h1{ font-size:2.4rem; }
+    p.message{ font-size:1rem; padding:0 12px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Joyeux Anniversaire</h1>
+
+<!-- SVG gâteau avec defs pour le dégradé et le glow -->
+<svg class="cake" viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gâteau d'anniversaire">
+  <defs>
+    <radialGradient id="flameGrad" cx="50%" cy="40%">
+      <stop offset="0%" stop-color="#fff6a9"/>
+      <stop offset="45%" stop-color="#ffd75e"/>
+      <stop offset="100%" stop-color="#ff7a2e"/>
+    </radialGradient>
+
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- léger ombrage pour les bougies -->
+    <linearGradient id="wickGrad" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#eee"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Assiette -->
+  <ellipse cx="110" cy="205" rx="95" ry="18" fill="#ececec"/>
+
+  <!-- Couche inférieure -->
+  <rect x="20" y="135" width="180" height="70" rx="5" fill="#ffd6e6"/>
+  <rect x="20" y="155" width="180" height="12" rx="0" fill="#ff9fb8"/>
+
+  <!-- Couche supérieure -->
+  <rect x="45" y="70" width="130" height="70" rx="5" fill="#fff2f5"/>
+  <rect x="45" y="92" width="130" height="10" rx="0" fill="#ffd9e6"/>
+
+  <!-- Glaçage coulant (doux) -->
+  <path d="M45 70 Q 70 110 90 80 Q 110 110 130 80 Q 150 110 175 70 L175 70 L45 70 Z" fill="#ff9fb8" opacity="0.95"/>
+
+  <!-- Décors : petites perles 
+  <g opacity="0.95">
+    <circle cx="60" cy="160" r="4" fill="#ffd166"/>
+    <circle cx="90" cy="155" r="4" fill="#8f94ff"/>
+    <circle cx="130" cy="162" r="4" fill="#22c1c3"/>
+    <circle cx="160" cy="150" r="4" fill="#ff4da6"/>
+  </g>-->
+
+  <!-- Bougies (stylées) -->
+  <g id="candles">
+    <!-- bougie 1 -->
+    <rect x="80" y="33" width="8" height="42" rx="4" fill="white" stroke="#f0f0f0" />
+    <!-- bougie 2 -->
+    <rect x="102" y="33" width="8" height="42" rx="4" fill="white" stroke="#f0f0f0" />
+    <!-- bougie 3 -->
+    <rect x="124" y="33" width="8" height="42" rx="4" fill="white" stroke="#f0f0f0" />
+  </g>
+
+  <!-- FLAMMES : mêmes coordonnées que les bougies ; animation CSS appliquée via .flame -->
+  <!-- Remarque : animation-duration & delay définis en inline pour varier -->
+  <ellipse class="flame" cx="84"  cy="34" rx="7.5" ry="12" fill="url(#flameGrad)" filter="url(#glow)"
+           style="animation-duration:0.90s; animation-delay:0s;" />
+  <ellipse class="flame" cx="106" cy="34" rx="7.5" ry="12" fill="url(#flameGrad)" filter="url(#glow)"
+           style="animation-duration:1.10s; animation-delay:0.18s;" />
+  <ellipse class="flame" cx="128" cy="34" rx="7.5" ry="12" fill="url(#flameGrad)" filter="url(#glow)"
+           style="animation-duration:0.82s; animation-delay:0.34s;" />
+
+</svg>
+
+<!-- Musique (auto-play si autorisé) -->
+<audio id="music" src="https://pixabay.com/fr/music/occasions-sp%C3%A9ciales-birthday-happy-birthday-music-373165/" loop></audio>
+
+<script>
+  // PLAY MUSIC (essaie auto-play ; si bloqué, démarre au premier clic)
+  const music = document.getElementById('music');
+  music.volume = 0.45;
+  music.play().catch(()=> {
+    document.body.addEventListener('click', ()=> music.play(), {once:true});
+  });
+
+
+
+  // Confettis continus (création légère)
+  const colors = ['#ff4da6','#ffd166','#4da6ff','#8f94ff','#22c1c3'];
+  function makeConfetti(){
+    const d = document.createElement('div');
+    d.className = 'confetti';
+    d.style.left = (Math.random()*100) + 'vw';
+    d.style.background = colors[Math.floor(Math.random()*colors.length)];
+    d.style.width = (6 + Math.random()*10) + 'px';
+    d.style.height = (6 + Math.random()*10) + 'px';
+    d.style.borderRadius = (Math.random()*3) + 'px';
+    const dur = 3 + Math.random()*4;
+    d.style.animationDuration = dur + 's';
+    d.style.transform = 'translateY(-20px) rotate(' + (Math.random()*360) + 'deg)';
+    document.body.appendChild(d);
+    setTimeout(()=> d.remove(), (dur+0.2)*1000);
+  }
+  // cadence
+  setInterval(makeConfetti, 110);
+
+  // Petite note : si tu veux encore plus lent, augmente animation-duration inline des .flame (ex: 1.6s),
+  // ou diminue pour accélérer.
+</script>
+
+</body>
+</html>
