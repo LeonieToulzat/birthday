@@ -31,8 +31,15 @@
     opacity:0; transform:translateY(8px); animation:fadeIn .9s ease forwards .2s;
   }
   p.message{
-    margin:8px 0 20px 0; text-align:center; max-width:760px; color:#444; font-size:1.15rem;
-    opacity:0; transform:translateY(10px); animation:fadeIn .95s ease forwards .35s;
+    font-family: "Great Vibes", cursive;
+    margin:8px 0 20px 0; 
+    text-align:center; 
+    max-width:760px; 
+    color:#444; 
+    font-size:1.15rem;
+    opacity:0; 
+    transform:translateY(10px); 
+    animation:fadeIn .95s ease forwards .35s;
   }
   @keyframes fadeIn{ to { opacity:1; transform:translateY(0); } }
 
@@ -41,14 +48,21 @@
 
   /* Flames style (gradient + glow) comes from SVG defs; animation controlled here */
   .flame {
-    transform-box: fill-box; /* make transform-origin inside SVG predictable */
-    transform-origin: 50% 75%;
-    animation-name: flameFlicker;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-    /* duration & delay will be set inline per-flame for natural variation */
-    will-change: transform, opacity;
-  }
+  transform-box: fill-box;
+  transform-origin: 50% 75%;
+  animation-name: flameFlicker;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  will-change: transform, opacity;
+  transition: opacity 1.5s ease-out; /* <- ajouté */
+}
+
+.flame.extinguished {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+
 
   @keyframes flameFlicker {
     0%   { transform: scale(1);    opacity: 0.86; }
@@ -75,6 +89,8 @@
 <body>
 
 <h1>Joyeux Anniversaire</h1>
+<p id="blowMessage" style="font-family: 'Great Vibes', cursive; font-size:2rem; color:#ff4da6; margin-top:20px; opacity:0; transition:opacity 0.8s;">Souffle les bougies !</p>
+
 
 <!-- SVG gâteau avec defs pour le dégradé et le glow -->
 <svg class="cake" viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gâteau d'anniversaire">
@@ -144,7 +160,9 @@
 </svg>
 
 <!-- Musique (auto-play si autorisé) -->
-<audio id="music" src="https://github.com/LeonieToulzat/birthday/blob/main/CHANSON%20-%20JOYEUX%20ANNIVERSAIRE.mp3" loop></audio>
+<audio id="music" src="https://leonietoulzat.github.io/birthday/CHANSON%20-%20JOYEUX%20ANNIVERSAIRE.mp3" loop></audio>
+<audio id="applause" src="https://leonietoulzat.github.io/birthday/Bruit%20dapplaudissement.mp3"></audio>
+
 
 <script>
   // PLAY MUSIC (essaie auto-play ; si bloqué, démarre au premier clic)
@@ -153,6 +171,41 @@
   music.play().catch(()=> {
     document.body.addEventListener('click', ()=> music.play(), {once:true});
   });
+
+  let canBlow = false; // par défaut, on ne peut pas souffler
+
+
+  // Afficher le message après 5 secondes
+setTimeout(() => {
+  const msg = document.getElementById('blowMessage');
+  msg.style.opacity = 1;
+  canBlow = true; // maintenant on peut souffler
+}, 5000); // 5 secondes
+
+
+const cake = document.querySelector('.cake');
+const flames = document.querySelectorAll('.flame');
+
+cake.addEventListener('click', () => {
+  if (!canBlow) return; // ignore les clics tant que le message n’est pas affiché
+
+  flames.forEach((f, i) => {
+    setTimeout(() => f.classList.add('extinguished'), i * 400); // extinction progressive
+  });
+
+  playApplause();
+  document.getElementById('blowMessage').style.opacity = 0;
+  canBlow = false; // on empêche de re-souffler
+});
+
+
+
+
+function playApplause() {
+  const applause = document.getElementById('applause');
+  applause.volume = 0.6;
+  applause.play();
+}
 
 
 
